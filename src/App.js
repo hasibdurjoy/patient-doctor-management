@@ -10,6 +10,7 @@ import Navigation from './Pages/Shared/Navigation/Navigation';
 import Login from './Pages/Authentication/LogIn/LogIn';
 import Register from './Pages/Authentication/Register/Register';
 import AuthProvider from './context/AuthProvider/AuthProvider';
+import Profile from './Pages/Shared/Profile/Profile';
 function App() {
   return (
     <AuthProvider>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/patient" element={<PatientHomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -24,7 +24,7 @@ const useFirebase = () => {
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
 
-    const registerUser = (email, password, name, role, dateOfBirth, navigate) => {
+    const registerUser = (email, password, name, role, dateOfBirth, image, navigate) => {
         setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
@@ -32,7 +32,7 @@ const useFirebase = () => {
                 const newUser = { email, displayName: name, role, dateOfBirth };
                 setUser(newUser);
 
-                saveUser(email, name, role, dateOfBirth, 'POST');
+                saveUser(email, name, role, dateOfBirth, image, 'POST');
 
                 updateProfile(auth.currentUser, {
                     displayName: name
@@ -118,16 +118,39 @@ const useFirebase = () => {
             .finally(() => setIsLoading(false));
     }
 
-    const saveUser = (email, displayName, role, dateOfBirth, method) => {
-        const user = { email, displayName, role, dateOfBirth };
-        fetch('http://localhost:5000/users', {
+    const saveUser = (email, displayName, role, dateOfBirth, image, method) => {
+        // const user = { email, displayName, role, dateOfBirth, formData };
+        const formData = new FormData();
+        formData.append('name', displayName);
+        formData.append('role', role);
+        formData.append('dateOfBirth', dateOfBirth);
+        formData.append('email', email);
+        formData.append('image', image);
+        let url = '';
+
+
+        if (role === 'patient') {
+            url = 'http://localhost:5000/patients'
+        }
+        if (role === 'doctor') {
+            url = 'http://localhost:5000/doctors'
+        }
+
+        fetch(url, {
             method: method,
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
+            method: 'POST',
+            body: formData
         })
-            .then()
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId) {
+                    // setSuccess('Doctor added successfully')
+                    console.log('doctor added successfully')
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
     return {
         user,

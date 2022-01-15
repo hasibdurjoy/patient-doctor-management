@@ -13,7 +13,7 @@ const Navigation = () => {
             <NavItem to="/contact">Contact</NavItem>
             {
                 user?.email ? <>
-                    <Button variant='contained'>{user.displayName}</Button>
+                    <NavItem to="/profile"><Button variant='contained'>{user.displayName}</Button></NavItem>
                     <Button variant='contained' onClick={logOut}>LogOut</Button>
                 </>
                     :

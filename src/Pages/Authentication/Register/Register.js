@@ -1,4 +1,4 @@
-import { Container, Typography, TextField, Button, CircularProgress, Alert, AlertTitle, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Container, Typography, TextField, Button, CircularProgress, Alert, AlertTitle, Select, MenuItem, FormControl, InputLabel, Input } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Grid from '@mui/material/Grid';
@@ -8,6 +8,7 @@ import useAuth from '../../../hooks/useAuth';
 const Register = () => {
 
     const [loginData, setLoginData] = useState({});
+    const [image, setImage] = useState(null);
     const navigate = useNavigate();
     const { user, registerUser, isLoading, authError } = useAuth();
 
@@ -24,7 +25,7 @@ const Register = () => {
             alert("your password didn't match try again")
         }
         else {
-            registerUser(loginData.email, loginData.password, loginData.name, loginData.role, loginData.dateOfBirth, navigate);
+            registerUser(loginData.email, loginData.password, loginData.name, loginData.role, loginData.dateOfBirth, image, navigate);
         }
 
         e.preventDefault();
@@ -84,6 +85,12 @@ const Register = () => {
                                     <MenuItem value='doctor'>Doctor</MenuItem>
                                 </Select>
                             </FormControl>
+
+                            <Input
+                                accept="image/*"
+                                type="file"
+                                onChange={e => setImage(e.target.files[0])}
+                            />
 
                             <TextField
                                 required
